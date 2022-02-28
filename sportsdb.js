@@ -25,7 +25,14 @@ const loadPlayers = () => {
 
     fetch(url)
       .then((response) => response.json())
-      .then((data) => displayPlayers(data.player));
+      .then((data) => {
+        // console.log(data.player == null); // handle irrelevant search name
+        if (data.player == null) {
+          alert('Sorry! search not found');
+        } else {
+          displayPlayers(data.player);
+        }
+      });
     playerContainer.textContent = '';
   }
 };
@@ -33,6 +40,7 @@ const loadPlayers = () => {
 const displayPlayers = (players) => {
   players.forEach((player) => {
     // console.log(player);
+
     const div = document.createElement('div');
     div.className = 'col-lg-5 border m-3 text-center py-3';
 
@@ -42,11 +50,12 @@ const displayPlayers = (players) => {
       </div>
       <h3 class="mt-2">Name: ${player.strPlayer}</h3>
       <h5>Country: ${player.strNationality}</h5>
-      <p> ${player.strDescriptionEN.slice(0, 120)} </p>
+      <p> ${player.strDescriptionEN?.slice(0, 120)} </p> 
       <button onclick="deletePlayer()" class="btn btn-danger">Delete</button>
       <button onclick="loadSinglePlayer('${
         player.idPlayer
       }')" class="btn btn-success">Details</button>`;
+
     playerContainer.appendChild(div);
   });
 };
@@ -71,6 +80,7 @@ const displaySinglePlayer = (player) => {
     document.getElementById('female').style.display = 'block';
     document.getElementById('male').style.display = 'none';
   }
+
   const div = document.createElement('div');
   div.className = 'mx-5 my-3 text-center py-3';
 
@@ -80,6 +90,6 @@ const displaySinglePlayer = (player) => {
     </div>
       <h3 class="mt-2">Name: ${player.strPlayer}</h3>
       <h5>Country: ${player.strNationality}</h5>
-      <p> ${player.strDescriptionEN.slice(0, 170)}</p>`;
+      <p> ${player.strDescriptionEN?.slice(0, 170)}</p>`;
   singlePlayerContainer.appendChild(div);
 };
